@@ -7,8 +7,9 @@ import matplotlib
 matplotlib.use('Pdf')
 #import matplotlib.pyplot as plt
 import math
+import requests
 
-wf = wave.open('/home/pi/Desktop/Douglas/teste.wav', 'r')
+wf = wave.open('/home/jonathan/Git/BabyOnBoard-Sensores/teste.wav', 'r')
 fs = wf.getframerate()
 ts=fs
 
@@ -54,21 +55,25 @@ AMP_DB = (20 * np.log10( AMP_RMS/ref )) + 94
 
 ###plt.show()
 # Comparando as Amplitudes
-print dbspl, AMP_DB.max()
+print('{} {}'.format(dbspl, AMP_DB.max()))
 
 #Valor definido como inicio do choro do bebê db=50
 #Escrita em arquivo
 
 if (dbspl >=50 or (AMP_DB.max() >= 60) ):
-	arquivo= open('/home/pi/Desktop/Douglas/arq_estado.txt', 'w')
-	arquivo.write("{\"estado\": \"criança chorando\"}")
-	arquivo.close()
-
+	content = {
+		"status": "true"
+	}
+	requests.post('http://127.0.0.1:8000/api/v1/noise/', json=content)
+#	arquivo= open('/home/pi/Desktop/Douglas/arq_estado.txt', 'w')
+#	arquivo.write("{\"estado\": \"criança chorando\"}")
+#	arquivo.close()
 else:
-	arquivo= open('/home/pi/Desktop/Douglas/arq_estado.txt', 'w')
-	arquivo.write("{\"estado\": \"não está chorando\"}")
-	arquivo.close()
-
-
-
+	content = {
+		"status": "false"
+	}
+	requests.post('http://127.0.0.1:8000/api/v1/noise/', json=content)
+#	arquivo= open('/home/pi/Desktop/Douglas/arq_estado.txt', 'w')
+#	arquivo.write("{\"estado\": \"não está chorando\"}")
+#	arquivo.close()
 
