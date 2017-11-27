@@ -15,14 +15,13 @@ void postAPI(double temp) {
     //Formating the string
     char temperature_str[100];
     sprintf(temperature_str,"{\"temperature\":\"%.2f\"}", temp);
-    printf("%s\n", temperature_str);
 
     /* In windows, this will init the winsock stuff */
     curl_global_init(CURL_GLOBAL_ALL);
     /* get a curl handle */
     curl = curl_easy_init();
 
-    if(curl) {
+    if (curl) {
 	struct curl_slist *headers = NULL;
 	headers = curl_slist_append(headers, "Accept: application/json");
 	headers = curl_slist_append(headers, "Content-Type: application/json");
@@ -38,7 +37,7 @@ void postAPI(double temp) {
         res = curl_easy_perform(curl);
 
         /* Check for errors */
-        if(res != CURLE_OK) {
+        if (res != CURLE_OK) {
             fprintf(stderr, "curl_easy_perform() failed: %s\n",
             curl_easy_strerror(res));
         }
@@ -96,17 +95,9 @@ void *sampler(void *fd) {
 	    delay(5, 0);
 	}
 	else {
-//	    printf("Ambient = %5.2lfC   Object = %5.2lfC    \r",
-//                    nrt[0] - 273.15, nrt[1] - 273.15);
-
 	    postAPI((nrt[1]-273.15));
 
-            //fprintf(output,"oioi");
-	    //fprintf(output,"{\"t\":%5.2lf}\n", nrt[1]-273.15);
-	    //fclose(output);
-	    //fflush(stdout);
 	    delay(5, 0);
-	    //break;
 	}
     }
 
@@ -119,8 +110,7 @@ void *sampler(void *fd) {
         else {
 	    nrt[0] = nrt[0] * 0.8 + temps[0] * 0.2;
 	    nrt[1] = nrt[1] * 0.8 + temps[1] * 0.2;
-	    printf("Ambient = %5.2lfC   Object = %5.2lfC    \r",
-                    nrt[0] - 273.15, nrt[1] - 273.15);
+
 	    fflush(stdout);
 	    delay(1, 0);
 	}
