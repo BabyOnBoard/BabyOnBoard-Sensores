@@ -9,7 +9,7 @@ matplotlib.use('Pdf')
 import math
 import requests
 
-wf = wave.open('/home/jonathan/Git/BabyOnBoard-Sensores/teste.wav', 'r')
+wf = wave.open('/home/pi/Git/BabyOnBoard-Sensores/teste.wav', 'r')
 fs = wf.getframerate()
 ts=fs
 
@@ -70,7 +70,7 @@ if (dbspl >=50 or (AMP_DB.max() >= 60) ):
 #	arquivo.close()
 else:
 	content = {
-		"status": "false"
+		"is_crying": "false"
 	}
 	requests.post('http://0.0.0.0:8000/api/v1/noise/', json=content)
 #	arquivo= open('/home/pi/Desktop/Douglas/arq_estado.txt', 'w')

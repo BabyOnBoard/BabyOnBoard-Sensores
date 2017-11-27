@@ -19,7 +19,7 @@ int main(){
 		fprintf(stdout, " Iniciando Processo Filho. Possui PID: %d.\n", (int)getpid() );
 		fprintf(stdout, "PID do Processo Pai: %d.\n", (int)getppid() );
 		fprintf(stdout, "Iniciando processo para gravação de audio pelo microfone");
-		system("cd /home/jonathan/Git/BabyOnBoard-Sensores/");
+		system("cd /home/pi/Git/BabyOnBoard-Sensores/");
 		system("rec -r 48000 -c1 teste.wav trim 0 5");
 		//sleep(4);
 		_exit(EXIT_SUCCESS);
@@ -46,8 +46,8 @@ int main(){
 		fprintf(stdout, "Processo pai. meu PID: %d.\n", (int)getpid() );
 		fprintf(stdout, "Processo pai. PID do processo filho anterior: %d.\n", (int)child_pid );
 		fprintf(stdout, "Iniciando processo de análise do áudio");
-		system("cd /home/jonathan/Git/BabyOnBoard-Sensores/");
-		system("sudo python3 microfone_db.py");
+		system("cd /home/pi/Git/BabyOnBoard-Sensores/");
+		system("sudo python3 ruido.py");
 		fprintf(stdout, "Audio analisado com sucesso!!!!");
 	}
 	return 0;
