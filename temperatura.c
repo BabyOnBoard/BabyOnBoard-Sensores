@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include <curl/curl.h>
 #include <string.h>
-
+#include <stdlib.h>
 
 void postAPI(double temp) {
     CURL *curl;
@@ -101,18 +101,11 @@ void *sampler(void *fd) {
 
 	    postAPI((nrt[1]-273.15));
 
-	    //output = fopen("temp.json","w+");
-            //
-	    //if(output == NULL) {
-	        //freopen("temp.json","w+",output);
-		//printf("erro");
-	    //}
-            //
             //fprintf(output,"oioi");
 	    //fprintf(output,"{\"t\":%5.2lf}\n", nrt[1]-273.15);
 	    //fclose(output);
 	    //fflush(stdout);
-	    //delay(1, 0);
+	    delay(5, 0);
 	    //break;
 	}
     }
