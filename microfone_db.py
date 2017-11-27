@@ -64,7 +64,7 @@ if (dbspl >=50 or (AMP_DB.max() >= 60) ):
 	content = {
 		"status": "true"
 	}
-	requests.post('http://127.0.0.1:8000/api/v1/noise/', json=content)
+	requests.post('http://0.0.0.0:8000/api/v1/noise/', json=content)
 #	arquivo= open('/home/pi/Desktop/Douglas/arq_estado.txt', 'w')
 #	arquivo.write("{\"estado\": \"criança chorando\"}")
 #	arquivo.close()
@@ -72,7 +72,7 @@ else:
 	content = {
 		"status": "false"
 	}
-	requests.post('http://127.0.0.1:8000/api/v1/noise/', json=content)
+	requests.post('http://0.0.0.0:8000/api/v1/noise/', json=content)
 #	arquivo= open('/home/pi/Desktop/Douglas/arq_estado.txt', 'w')
 #	arquivo.write("{\"estado\": \"não está chorando\"}")
 #	arquivo.close()
