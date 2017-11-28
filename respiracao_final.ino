@@ -6,9 +6,9 @@
 // Codigo para o MSP430 configurado como
 // escravo SPI
 
-#define MISS BIT3
-#define MSS BIT4
-#define SCLK BIT5
+#define MISS BIT1 //pin35
+#define MSS BIT2 //pin38
+#define SCLK BIT4 //pin40
 #define DLY1 0x6000
 #define DLY2 0x3000
 
@@ -23,7 +23,6 @@ int var_respira=0;
 int conta_tempo=0;
 int BABYON=0;
 
-volatile unsigned char teste =00;
 long int sensorValue = 0;     
 
 
@@ -59,8 +58,8 @@ int main(void)
   P1IFG  = 0x00;			    //LIMPA FLAGS DE INTERRUPÇÃO
   P1DIR &= ~0x20;                            // P1.5 INPUT
   P1DIR &= ~0x01;                           // // P1.0 INPUT
-  P1DIR = 0x42;                              //02-BIT1 08 BIT3 ===10 = 0x0E SAÍDAS
-  P1OUT &= ~0x42;
+  P1DIR = 0x48;                              //0X08 BIT3 0X40 BIT6 ===0X48 SAÍDAS
+  P1OUT &= ~0x48;
   
 /////// CONFIGURAÇÃO DO ADC ///////////
         // V+ref=3V,V-ref=0V,CANAL=A0
@@ -87,13 +86,15 @@ int main(void)
      
      /////////////////LÓGICA DE DETECÇÃO////////////////////// 	
                
-           
-              if ((P1IN & 0x20) != 0){  //>VDD/2 
-                    BABYON=0;           //FLAG CRIANÇA AUSENTE
-                    P1OUT&=~0x02;       //SAÍDA INDICANDO CRIANÇA AUSENTE
-                    P1OUT&=~0x40; 
-                    morto=0;    segundos=0;  
-	            Send_Data(00);
+volatile unsigned char teste ;
+     if ((P1IN & 0x20) != 0){   //>vdd/2
+    
+                    BABYON=0; //flag criança ausente
+                    P1OUT&=~0x08; //sinal criança ausente
+                    P1OUT&=~0x40;
+                   teste=0;
+	            Send_Data(teste); 
+                   
              }
              
              else{ 
@@ -105,7 +106,7 @@ int main(void)
               if(sensorValue<100){}
           
                        
-                      P1OUT|=0x02;       //SAÍDA INDICANDO CRIANÇA NO BERÇO
+                      P1OUT|=0x08;       //SAÍDA INDICANDO CRIANÇA NO BERÇO
                       
                }
 
@@ -118,20 +119,20 @@ int main(void)
 // INTERRUPÇÃO QUE CONTA A CADA 0,01 SEGUNDOS 
 interrupt(TIMER1_A1_VECTOR) TA1_ISR(void)
 {
-
+volatile unsigned char teste ;
      if ((P1IN & 0x20) != 0){   //>vdd/2
     
                     BABYON=0; //flag criança ausente
-                    P1OUT&=~0x02; //sinal criança ausente
+                    P1OUT&=~0x08; //sinal criança ausente
                     P1OUT&=~0x40;
-                   
-	            Send_Data(00); 
+                   teste=0;
+	            Send_Data(teste); 
                     morto=0;    segundos=0;  
              }
              
      else{ 
             BABYON=1; //flag criança no berço
-            P1OUT|=0x02; //criança no berço
+            P1OUT|=0x08; //criança no berço
                       
                
  
@@ -165,14 +166,14 @@ interrupt(TIMER1_A1_VECTOR) TA1_ISR(void)
        segundos=0;
        P1OUT&=~0x40; //criança respirando
        var_respira=0;
-       
-       Send_Data(10);
+       teste=2;
+       Send_Data(teste);
      }
        
         if(morto>=1){
         P1OUT|= 0x40; /// criança sem respiração
-       
-	Send_Data(11);
+       teste=3;
+	Send_Data(teste);
         }
    }
  
@@ -182,8 +183,8 @@ interrupt(TIMER1_A1_VECTOR) TA1_ISR(void)
     }
     else{
        P1OUT|= 0x40; /// criança sem respiração
-       
-       Send_Data(11);
+       teste=3;
+       Send_Data(teste);
        segundos=0;
        morto=1;       
     }      
@@ -213,15 +214,13 @@ sensorValue=adc_value;
 		 
 }
   
-//  interrupt(USCIAB0RX_VECTOR) Receive_Data(void)
-//  {
-//  	volatile unsigned char teste = UCA0RXBUF;
-//  	
-//  	if(teste<6)
-//  	{
-//  		Send_Data(teste);
-//  	}
-//  	IFG2 &= ~UCA0RXIFG;
-//  
-//  }
-
+  interrupt(USCIAB0RX_VECTOR) Receive_Data(void)
+  {
+  	volatile unsigned char teste ;
+  	
+  	       // teste=2;
+  		//Send_Data(teste);
+  
+  	IFG2 &= ~UCA0RXIFG;
+  
+  }
