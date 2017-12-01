@@ -60,9 +60,9 @@ print('{} {}'.format(dbspl, AMP_DB.max()))
 #Valor definido como inicio do choro do bebê db=50
 #Escrita em arquivo
 
-if (dbspl >=50 or (AMP_DB.max() >= 60) ):
+if (dbspl >=55 or (AMP_DB.max() >= 55) ):
 	content = {
-		"status": "true"
+		"is_crying": "true"
 	}
 	requests.post('http://0.0.0.0:8000/api/v1/noise/', json=content)
 #	arquivo= open('/home/pi/Desktop/Douglas/arq_estado.txt', 'w')

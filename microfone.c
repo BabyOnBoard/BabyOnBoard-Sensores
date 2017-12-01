@@ -47,7 +47,7 @@ int main(){
 		fprintf(stdout, "Processo pai. PID do processo filho anterior: %d.\n", (int)child_pid );
 		fprintf(stdout, "Iniciando processo de análise do áudio");
 		system("cd /home/pi/Git/BabyOnBoard-Sensores/");
-		system("sudo python3 ruido.py");
+		system("sudo python3 microfone.py");
 		fprintf(stdout, "Audio analisado com sucesso!!!!");
 	}
 	return 0;
