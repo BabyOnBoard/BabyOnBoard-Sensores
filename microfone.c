@@ -7,6 +7,7 @@
 
 
 int main(){
+while(1) {
   pid_t child_pid;
   int status;
 
@@ -50,6 +51,7 @@ int main(){
 		system("sudo python3 microfone.py");
 		fprintf(stdout, "Audio analisado com sucesso!!!!");
 	}
+}
 	return 0;
 }
 
